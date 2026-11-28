@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import sheets, { spreadsheetId } from '../config/googleSheets.js';
+import sheets, { assertGoogleSheetsConfigured, spreadsheetId } from '../config/googleSheets.js';
 
 const definitions = {
   Users: ['id', 'name', 'email', 'mobile', 'passwordHash', 'role', 'profilePhoto', 'isActive', 'createdAt', 'updatedAt'],
@@ -36,6 +36,7 @@ const deserialize = (field, value) => {
 };
 
 async function ensureSheet(name) {
+  assertGoogleSheetsConfigured();
   if (initialized.has(name)) return;
   const headers = definitions[name];
   if (!headers) throw new Error(`Unknown sheet: ${name}`);
