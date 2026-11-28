@@ -51,6 +51,16 @@ app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/agent-profile', agentProfileRoutes);
 app.use('/api/contact', contactRoutes);
+const frontendDistDirectory = path.resolve(
+  currentDirectory,
+  '../../frontend/dist'
+);
+
+app.use(express.static(frontendDistDirectory));
+
+app.get(/^(?!\/api(?:\/|$)|\/uploads(?:\/|$)).*/, (req, res) => {
+  res.sendFile(path.join(frontendDistDirectory, 'index.html'));
+});
 
 app.use((err, req, res, next) => {
   console.error(err);
